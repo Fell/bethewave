@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 448b1b1e7f5c13d4bbd5cd1aa975b135
+timeCreated: 1484946241
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DJB Get Digital
+  fontNames:
+  - DJB Get Digital
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
