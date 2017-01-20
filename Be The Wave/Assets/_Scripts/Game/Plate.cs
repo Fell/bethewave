@@ -7,8 +7,7 @@ public class Plate : MonoBehaviour
 
     #region Fields
 
-    [SerializeField]
-    private Food[] m_foods;
+    public List<Food> m_foods = new List<Food>();
 
     #endregion
 
