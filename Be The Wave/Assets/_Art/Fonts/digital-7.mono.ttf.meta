@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 448b1b1e7f5c13d4bbd5cd1aa975b135
-timeCreated: 1484946241
+guid: c8d49ae7324a69c4fbafcb2ca59b9444
+timeCreated: 1484948949
 licenseType: Pro
 TrueTypeFontImporter:
   serializedVersion: 4
@@ -9,10 +9,11 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: DJB Get Digital
+  fontName: Digital-7 Mono
   fontNames:
-  - DJB Get Digital
-  fallbackFontReferences: []
+  - Digital-7 Mono
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0df219767bc7a7845ba81b6bafa1e0a5, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
