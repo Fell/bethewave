@@ -89,10 +89,10 @@ public class PowerMeter : MonoBehaviour
 
         //Transform newMarker = Instantiate(marker, new Vector3(-0.5f, (value - 50) / 10, 0) + transform.position, Quaternion.Euler(0,0,90), transform);
         Transform newMarker = Instantiate( marker, transform.position, transform.rotation, transform );
-        newMarker.transform.localRotation = Quaternion.Euler( 0, 0, 90 );
+        newMarker.transform.localRotation = Quaternion.Euler( 0, 90, 90 );
         newMarker.transform.localPosition = new Vector3( -0.5f, ( value - 50 ) / 10, 0 );
 
-        newMarker.Find( "Label" ).gameObject.GetComponent<TextMesh>().text = food.name;
+        //newMarker.Find( "Label" ).gameObject.GetComponent<TextMesh>().text = food.name;
         newMarker.Find( "Icon" ).gameObject.GetComponent<MeshRenderer>().material.mainTexture = food.m_texture;
     }
 

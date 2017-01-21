@@ -16,7 +16,8 @@ public class Microwave : MonoBehaviour
 
     public void StartWaving()
     {
-
+        SoundManager sound = this.transform.Find("Audio Source").gameObject.GetComponent<SoundManager>();
+        StartCoroutine(sound.PlayStartup());
     }
 
     public Food[] GetFoods()
