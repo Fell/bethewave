@@ -19,4 +19,9 @@ public class Microwave : MonoBehaviour
 
     }
 
+    public Food[] GetFoods()
+    {
+        return m_plate.GetFoods();
+    } 
+
 }
