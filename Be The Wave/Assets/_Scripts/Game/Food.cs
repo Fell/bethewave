@@ -44,6 +44,7 @@ public class Food : MonoBehaviour
         // Update Text
         TextMesh theMesh = transform.Find( "StatusText" ).gameObject.GetComponent<TextMesh>();
         theMesh.text = (int)m_actDegreePec + "%";
+        theMesh.color = Color.Lerp( Color.white, Color.red, m_actBurnPec / 100 );
     }
 
     #endregion

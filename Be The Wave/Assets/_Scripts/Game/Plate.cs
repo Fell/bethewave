@@ -114,11 +114,12 @@ public class Plate : MonoBehaviour
                 if ( _devi > 10 )
                 {
                     // 100 - 10
-                    _burnMultiplier = Mathf.Lerp( 1, 0, ( 90.0f - m_children[ i ].m_reqStrengthLv - _devi ) / ( 90 - m_children[ i ].m_reqStrengthLv ) );
+
+                    _burnMultiplier = _devi - 10;
                 }
 
-                m_children[ i ].m_actBurnPec += ( _burnMultiplier * Time.deltaTime * m_children[ i ].m_burnPecRaise );
-                m_children[ i ].m_actDegreePec += ( _heatMultiplier * Time.deltaTime * m_children[ i ].m_degreePecRaise );
+                m_children[ i ].m_actBurnPec += _burnMultiplier;
+                m_children[ i ].m_actDegreePec += m_children[ i ].m_degreePecRaise * Time.deltaTime * _heatMultiplier;
 
                 //Debug.LogFormat( "{0}: Heat: {1}%, Burn: {2}%", m_children[ i ].name, m_children[ i ].m_actDegreePec, m_children[ i ].m_actBurnPec );
             }
