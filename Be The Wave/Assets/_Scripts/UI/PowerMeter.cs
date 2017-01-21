@@ -35,7 +35,7 @@ public class PowerMeter : MonoBehaviour
     void Update()
     {
 
-        if ( Input.GetKeyDown( "space" ) )
+        if ( Input.GetKeyDown(KeyCode.Space) )
         {
             Value += m_increaseStep;
             m_lerpT = 0;
