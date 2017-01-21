@@ -35,10 +35,19 @@ public class PlateEditor : Editor
 
 
         m_list.DoLayoutList();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_rotSpeed"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_distance"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_triggerAngle"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_time"));
+
+        var _it = serializedObject.GetIterator();
+
+        var _iterate = _it.NextVisible( true );
+
+        if ( _iterate )
+        {
+            do
+            {
+                if ( _it.name != "m_foods" )
+                    EditorGUILayout.PropertyField( _it );
+            } while ( _it.NextVisible( false ) );
+        }
         serializedObject.ApplyModifiedProperties();
     }
 
@@ -74,7 +83,7 @@ public class PlateEditor : Editor
 
             EditorGUI.LabelField( _nameRect, _food.name );
 
-            EditorGUI.LabelField( _pictureRect, new GUIContent( AssetPreview.GetAssetPreview( _food.gameObject ) ) );
+            EditorGUI.LabelField( _pictureRect, new GUIContent( _food.m_texture ) );
         }
     }
 

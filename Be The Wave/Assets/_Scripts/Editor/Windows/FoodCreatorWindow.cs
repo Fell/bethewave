@@ -109,6 +109,7 @@ public class FoodCreatorWindow : EditorWindow
     private void CreateFood()
     {
         var _obj = GameObject.CreatePrimitive( PrimitiveType.Quad );
+        _obj.GetComponent<MeshRenderer>().material = AssetDatabase.LoadAssetAtPath<Material>( "Assets/_Art/Materials/FoodMaterial.mat" );
         _obj.AddComponent<Food>();
         _obj.name = m_newName;
         var _sub = new GameObject( "StatusText", typeof( TextMesh ) );
