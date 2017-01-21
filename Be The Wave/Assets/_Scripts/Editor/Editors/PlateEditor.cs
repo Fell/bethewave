@@ -16,8 +16,6 @@ public class PlateEditor : Editor
 
     ReorderableList m_list;
 
-
-
     #endregion
 
 
@@ -33,9 +31,6 @@ public class PlateEditor : Editor
             m_list.elementHeightCallback = OnElementHeight;
         }
 
-
-        m_list.DoLayoutList();
-
         var _it = serializedObject.GetIterator();
 
         var _iterate = _it.NextVisible( true );
@@ -48,6 +43,8 @@ public class PlateEditor : Editor
                     EditorGUILayout.PropertyField( _it );
             } while ( _it.NextVisible( false ) );
         }
+
+        m_list.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
     }
 

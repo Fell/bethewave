@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,9 +12,9 @@ public class GameManager : MonoBehaviour
 
     public int m_currentIndex = 0;
 
-
     public string mainMenuScene = "MainMenu";
 
+    public bool m_isPaused = true;
 
     public static GameManager Instance
     {
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         m_currentIndex = 0;
+        m_isPaused = true;
         SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
@@ -47,12 +49,28 @@ public class GameManager : MonoBehaviour
 
     public void StopGame()
     {
+        m_isPaused = true;
         SceneManager.LoadScene( mainMenuScene );
+    }
+
+    public void CreateField()
+    {
+        UIManager.Instance.m_microwave.SetPlate( m_levels[ m_currentIndex ].m_plate );
+        UIManager.Instance.m_timer.OnTimerFinished += OnTimerFinished;
+    }
+
+    private void OnTimerFinished()
+    {
+        UIManager.Instance.m_timer.OnTimerFinished -= OnTimerFinished;
+
+        m_isPaused = true;
     }
 
     public void StartScene()
     {
-        UIManager.Instance.m_microwave.SetPlate( m_levels[ m_currentIndex ].m_plate );
+        UIManager.Instance.m_microwave.StartWaving();
+
+        m_isPaused = false;
     }
 }
 
