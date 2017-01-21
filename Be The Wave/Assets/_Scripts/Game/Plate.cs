@@ -15,6 +15,8 @@ public class Plate : MonoBehaviour
 
     public float m_triggerAngle = 45;
 
+    public float m_time = 300;
+
     private float angle;
 
     #endregion
