@@ -35,8 +35,9 @@ public class PlateEditor : Editor
 
 
         m_list.DoLayoutList();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("rotSpeed"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("distance"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_rotSpeed"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_distance"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_triggerAngle"));
         serializedObject.ApplyModifiedProperties();
     }
 
