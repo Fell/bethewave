@@ -6,22 +6,24 @@ public class WaveArea : MonoBehaviour {
 
     public Material m_sparkMaterial;
 
+    private List<GameObject> m_sparkleList;
+
 	// Use this for initialization
 	void Start () {
         // Box
         BoxCollider box = GetComponent<BoxCollider>();
 
-        Vector3 corner1 = transform.position - box.size/2 + box.center;
-        Vector3 corner2 = transform.position + box.size/2 + box.center;
+        Vector3 corner1 = -box.size/2 + box.center;
+        Vector3 corner2 = box.size/2 + box.center;
 
         CreateSparkle(corner1);
         CreateSparkle(corner2);
 
-        
-        for (float x = corner1.x; x < corner2.x; x += 1f) {
-            for (float y = corner1.y; y < corner2.y; x += 1f) {
-                for (float z = corner1.z; z < corner2.z; z += 1f) {
-                    CreateSparkle(new Vector3(x, y, z));
+        float step = 0.25f;
+        for (float x = corner1.x; x < corner2.x; x += step) {
+            for (float y = corner1.y; y < corner2.y; y += step) {
+                for (float z = corner1.z; z < corner2.z; z += step) {
+                    CreateSparkle(new Vector3(x + step / 2, y + step / 2, z + step / 2));
                 }
             }
         }
@@ -38,14 +40,15 @@ public class WaveArea : MonoBehaviour {
         GameObject sparkle = new GameObject("Sparkle");
 
         MeshFilter meshFilter = sparkle.AddComponent<MeshFilter>();
-        meshFilter.mesh = CreatePlaneMesh(0.1f, 0.1f);
+        meshFilter.mesh = CreatePlaneMesh(0.05f, 0.05f);
 
         MeshRenderer renderer = sparkle.AddComponent<MeshRenderer>();
         renderer.material = m_sparkMaterial;
 
         sparkle.transform.parent = transform;
-        sparkle.transform.position = position;
-        sparkle.transform.transform.rotation = Camera.main.transform.rotation;
+        sparkle.transform.localPosition = position;
+        sparkle.transform.rotation = Camera.main.transform.rotation;
+        sparkle.transform.localScale = new Vector3(0, 0, 0);
     }
 
     // Source: http://answers.unity3d.com/questions/139808/creating-a-plane-mesh-directly-from-code.html
