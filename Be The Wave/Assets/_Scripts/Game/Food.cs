@@ -10,11 +10,11 @@ public class Food : MonoBehaviour
 
     public int m_reqStrengthLv;
 
-    public int m_actDegreePec;
-    public int m_degreePecRaise;
+    public float m_actDegreePec;
+    public float m_degreePecRaise;
 
-    public int m_actBurnPec;
-    public int m_burnPecRaise;
+    public float m_actBurnPec;
+    public float m_burnPecRaise;
 
     int m_neededDegree = 100;
 
@@ -43,7 +43,7 @@ public class Food : MonoBehaviour
 
         // Update Text
         TextMesh theMesh = transform.Find( "StatusText" ).gameObject.GetComponent<TextMesh>();
-        theMesh.text = m_actDegreePec + "%";
+        theMesh.text = (int)m_actDegreePec + "%";
     }
 
     #endregion

@@ -70,10 +70,10 @@ public class Plate : MonoBehaviour
 
             float newPlateRot = transform.rotation.eulerAngles.y + 360;
 
-            if ( newPlateRot >= lowAngle && newPlateRot <= highAngle )
-            {
-                Debug.Log( "ok" + i );
-            }
+            //if ( newPlateRot >= lowAngle && newPlateRot <= highAngle )
+            //{
+            //    Debug.Log( "ok" + i );
+            //}
         }
 
         CalcHeating();
@@ -81,18 +81,26 @@ public class Plate : MonoBehaviour
 
     private void CalcHeating()
     {
-        var _minDot = Mathf.Cos( Mathf.Rad2Deg * m_triggerAngle );
+        var _minDot = Mathf.Cos( Mathf.Deg2Rad * m_triggerAngle );
 
         for ( int i = 0; i < m_children.Length; i++ )
         {
             Vector3 _dir = m_children[ i ].transform.position - transform.position;
             _dir -= transform.up * Vector3.Dot( _dir, transform.up );
             _dir = _dir.normalized;
-            var _dot = Vector3.Dot( _dir, transform.parent.right );
+            // we fucked up axes (microwave.right is transform.down)
+            var _dot = Vector3.Dot( _dir, -transform.parent.forward );
+
+            Debug.LogFormat( "{0}: {1:0.00}°", m_children[ i ].name, ( Mathf.Acos( _dot ) * Mathf.Rad2Deg ) );
+
+            Debug.DrawRay( m_children[ i ].transform.position, -transform.parent.forward, Color.green );
+            Debug.DrawRay( m_children[ i ].transform.position, _dir, Color.red );
 
             // change later!!!
             if ( _dot > _minDot )
             {
+                Debug.LogFormat( "{0} has influence: {1}", m_children[ i ].name, 1 );
+
                 var _devi = UIManager.Instance.m_powerMeter.getDeviation( m_children[ i ] );
 
                 var _heatMultiplier = 1.0f;
@@ -100,7 +108,8 @@ public class Plate : MonoBehaviour
                 // maybe change
                 if ( _devi < -10 )
                 {
-                    _heatMultiplier = Mathf.Lerp( 1, 0, -( ( _devi + 10 ) / Mathf.Max( 1, ( m_children[ i ].m_reqStrengthLv - 10 ) ) ) );
+                    _heatMultiplier = Mathf.Clamp01( ( m_children[ i ].m_reqStrengthLv + _devi ) / Mathf.Max( 1, ( m_children[ i ].m_reqStrengthLv - 10 ) ) );
+                    //_heatMultiplier = Mathf.Lerp( 1, 0, -( ( _devi + 10 ) / Mathf.Max( 1, ( m_children[ i ].m_reqStrengthLv - 10 ) ) ) );
                 }
                 if ( _devi > 10 )
                 {
@@ -108,8 +117,10 @@ public class Plate : MonoBehaviour
                     _burnMultiplier = Mathf.Lerp( 1, 0, ( 90.0f - m_children[ i ].m_reqStrengthLv - _devi ) / ( 90 - m_children[ i ].m_reqStrengthLv ) );
                 }
 
-                m_children[ i ].m_actBurnPec += (int)( _burnMultiplier * Time.deltaTime * m_children[ i ].m_burnPecRaise );
-                m_children[ i ].m_actDegreePec += (int)( _heatMultiplier * Time.deltaTime * m_children[ i ].m_degreePecRaise );
+                m_children[ i ].m_actBurnPec += ( _burnMultiplier * Time.deltaTime * m_children[ i ].m_burnPecRaise );
+                m_children[ i ].m_actDegreePec += ( _heatMultiplier * Time.deltaTime * m_children[ i ].m_degreePecRaise );
+
+                //Debug.LogFormat( "{0}: Heat: {1}%, Burn: {2}%", m_children[ i ].name, m_children[ i ].m_actDegreePec, m_children[ i ].m_actBurnPec );
             }
 
         }

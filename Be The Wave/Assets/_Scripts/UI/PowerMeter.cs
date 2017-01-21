@@ -35,7 +35,7 @@ public class PowerMeter : MonoBehaviour
     void Update()
     {
 
-        if ( !GameManager.Instance.m_isPaused && Input.GetKeyDown(KeyCode.Space) )
+        if ( !GameManager.Instance.m_isPaused && Input.GetKeyDown( KeyCode.Space ) )
         {
             Value += m_increaseStep;
             m_lerpT = 0;
@@ -93,6 +93,7 @@ public class PowerMeter : MonoBehaviour
         newMarker.transform.localPosition = new Vector3( -0.5f, ( value - 50 ) / 10, 0 );
 
         newMarker.Find( "Label" ).gameObject.GetComponent<TextMesh>().text = food.name;
+        newMarker.Find( "Icon" ).gameObject.GetComponent<MeshRenderer>().material.mainTexture = food.m_texture;
     }
 
     public float getDeviation( Food food )
