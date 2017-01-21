@@ -27,8 +27,7 @@ public class PowerMeter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this.addMarker( "Karotte", 77 );
-        this.addMarker( "Eis", 38 );
+        
     }
 
     // Update is called once per frame
@@ -59,7 +58,7 @@ public class PowerMeter : MonoBehaviour
 
     void OnGUI()
     {
-
+        /*
         Texture2D color = new Texture2D( 1, 1 );
         color.SetPixel( 0, 0, new Color( 1, 0, 0 ) );
         color.Apply();
@@ -82,6 +81,7 @@ public class PowerMeter : MonoBehaviour
         }
 
         GUI.Label( new Rect( 100, 100, 100, 200 ), label );
+        */
     }
 
     public void addMarker( string name, float value )

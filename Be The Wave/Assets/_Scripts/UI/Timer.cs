@@ -44,7 +44,7 @@ public class Timer : MonoBehaviour {
         if (m_ticking && (int)Time > 0)
         {
             // Update Time
-            Time -= UnityEngine.Time.deltaTime;
+            m_time -= UnityEngine.Time.deltaTime;
 
             // Update Text
             TextMesh theMesh = gameObject.GetComponent<TextMesh>();
