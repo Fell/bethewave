@@ -27,7 +27,8 @@ public class PowerMeter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
+        this.addMarker( "Karotte", 77 );
+        this.addMarker( "Eis", 38 );
     }
 
     // Update is called once per frame
