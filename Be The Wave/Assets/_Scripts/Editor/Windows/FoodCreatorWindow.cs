@@ -111,8 +111,12 @@ public class FoodCreatorWindow : EditorWindow
         var _obj = GameObject.CreatePrimitive( PrimitiveType.Quad );
         _obj.AddComponent<Food>();
         _obj.name = m_newName;
+        var _sub = new GameObject( "StatusText", typeof( TextMesh ) );
+        _sub.transform.parent = _obj.transform;
+        _sub.transform.localPosition += Vector3.up * 3;
 
         _obj.CreatePrefab( PATH );
+
 
         RecreatePopup();
 

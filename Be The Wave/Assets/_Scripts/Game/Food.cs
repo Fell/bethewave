@@ -38,11 +38,12 @@ public class Food : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.forward = -Camera.main.transform.forward;
+        //transform.rotation = Quaternion.LookRotation( -Camera.main.transform.forward, Vector3.up );
+        transform.forward = Camera.main.transform.forward;
 
         // Update Text
-        TextMesh theMesh = transform.Find("StatusText").gameObject.GetComponent<TextMesh>();
-        theMesh.text = m_actDegreePec+"%";
+        TextMesh theMesh = transform.Find( "StatusText" ).gameObject.GetComponent<TextMesh>();
+        theMesh.text = m_actDegreePec + "%";
     }
 
     #endregion
