@@ -35,6 +35,10 @@ public class Food : MonoBehaviour
     void Update()
     {
         transform.forward = -Camera.main.transform.forward;
+
+        // Update Text
+        TextMesh theMesh = transform.Find("StatusText").gameObject.GetComponent<TextMesh>();
+        theMesh.text = m_actDegreePec+"%";
     }
 
     #endregion
