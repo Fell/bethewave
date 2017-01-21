@@ -91,4 +91,9 @@ public class PowerMeter : MonoBehaviour {
         
         newMarker.Find("Label").gameObject.GetComponent<TextMesh>().text = name;
     }
+
+    public float getDeviation(string markerName)
+    {
+        return m_lerpedValue - m_markers[markerName];
+    }
 }
