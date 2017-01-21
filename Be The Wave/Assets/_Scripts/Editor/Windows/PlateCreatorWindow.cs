@@ -57,7 +57,7 @@ public class PlateCreatorWindow : EditorWindow
         }
     }
 
-    [MenuItem( "Window/BeTheWave/Plate Creator" )]
+    [MenuItem( "Window/Be The Wave/Plate Creator" )]
     private static void Open()
     {
         GetWindow<PlateCreatorWindow>();

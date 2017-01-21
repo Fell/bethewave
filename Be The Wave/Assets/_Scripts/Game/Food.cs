@@ -6,10 +6,10 @@ public class Food : MonoBehaviour
 {
 
     #region Fields
-    
+
 
     public int m_reqStrengthLv;
-    
+
     public int m_actDegreePec;
     public int m_degreePecRaise;
 
@@ -17,6 +17,8 @@ public class Food : MonoBehaviour
     public int m_burnPecRaise;
 
     int m_neededDegree = 100;
+
+    public Texture m_texture;
 
     #endregion
 
@@ -29,6 +31,8 @@ public class Food : MonoBehaviour
     {
         m_actDegreePec = 0;
         m_actBurnPec = 0;
+
+        GetComponentInChildren<MeshRenderer>().material.mainTexture = m_texture;
     }
 
     // Update is called once per frame
