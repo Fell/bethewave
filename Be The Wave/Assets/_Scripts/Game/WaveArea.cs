@@ -6,7 +6,9 @@ public class WaveArea : MonoBehaviour {
 
     public Material m_sparkMaterial;
 
-    private List<GameObject> m_sparkleList;
+    private List<GameObject> m_sparkleList = new List<GameObject>();
+
+    private float[] m_waves = new float[10];
 
 	// Use this for initialization
 	void Start () {
@@ -16,25 +18,55 @@ public class WaveArea : MonoBehaviour {
         Vector3 corner1 = -box.size/2 + box.center;
         Vector3 corner2 = box.size/2 + box.center;
 
-        CreateSparkle(corner1);
-        CreateSparkle(corner2);
+        
 
-        float step = 0.25f;
+        float step = 0.15f;
         for (float x = corner1.x; x < corner2.x; x += step) {
             for (float y = corner1.y; y < corner2.y; y += step) {
                 for (float z = corner1.z; z < corner2.z; z += step) {
-                    CreateSparkle(new Vector3(x + step / 2, y + step / 2, z + step / 2));
+                    CreateSparkle(new Vector3(x + step / 2 + Random.Range(-(step/2), step/2), y + step / 2 + Random.Range(-(step / 2), step / 2), z + step / 2 + Random.Range(-(step / 2), step / 2)));
                 }
             }
         }
-
-        Debug.Log(corner1.ToString() + " " + corner2.ToString());
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+        for(int w = 0; w < 10; w++) {
+            if (m_waves[w] < 3) m_waves[w] += 5 * Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            for (int w = 0; w < 10; w++) {
+                if (m_waves[w] > 3) {
+                    m_waves[w] = 0;
+                    break;
+                }
+            }
+        }
+
+        foreach (GameObject sparkle in m_sparkleList) {
+            float distance = Vector3.Distance(sparkle.transform.position, transform.position);
+            sparkle.transform.localScale = new Vector3(1,1,1) * getIntensity(distance);
+        }
 	}
+
+    float getIntensity(float distance) {
+
+        float sum = 0f;
+
+        for (int w = 0; w < 10; w++) {
+            if (m_waves[w] < 3) {
+                sum += Mathf.Clamp(1 - (Mathf.Abs(distance - m_waves[w])) * 1 - (m_waves[w] / 2), 0, 1);
+                //sum += (3 / (m_waves[w] - 1)) / Mathf.Pow((distance - m_waves[w]), 2);
+            }
+        }
+
+        
+
+        return sum;
+    }
 
     void CreateSparkle(Vector3 position) {
         GameObject sparkle = new GameObject("Sparkle");
@@ -49,6 +81,8 @@ public class WaveArea : MonoBehaviour {
         sparkle.transform.localPosition = position;
         sparkle.transform.rotation = Camera.main.transform.rotation;
         sparkle.transform.localScale = new Vector3(0, 0, 0);
+
+        m_sparkleList.Add(sparkle);
     }
 
     // Source: http://answers.unity3d.com/questions/139808/creating-a-plane-mesh-directly-from-code.html
