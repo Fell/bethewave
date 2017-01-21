@@ -13,7 +13,7 @@ public class PowerMeter : MonoBehaviour
     public float Value { get; private set; }
 
 
-    private Dictionary<string, float> m_markers = new Dictionary<string, float>();
+    private Dictionary<Food, float> m_markers = new Dictionary<Food, float>();
 
     private float m_lerpedValue = 0;
     private float m_lerpT = 1.0f;
@@ -27,15 +27,14 @@ public class PowerMeter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        this.addMarker( "Karotte", 77 );
-        this.addMarker( "Eis", 38 );
+        //this.addMarker( "Karotte", 77 );
+        //this.addMarker( "Eis", 38 );
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if ( Input.GetKeyDown( "space" ) )
+        if ( !GameManager.Instance.m_isPaused && Input.GetKeyDown( "space" ) )
         {
             Value += m_increaseStep;
             m_lerpT = 0;
@@ -53,8 +52,6 @@ public class PowerMeter : MonoBehaviour
 
         GameObject indicator = transform.Find( "Indicator" ).gameObject;
         indicator.transform.localPosition = new Vector3( 0.5f, ( m_lerpedValue - 50 ) / 10, 0 );
-
-
     }
 
     void OnGUI()
@@ -85,20 +82,20 @@ public class PowerMeter : MonoBehaviour
         */
     }
 
-    public void addMarker( string name, float value )
+    public void addMarker( Food food, float value )
     {
-        m_markers.Add( name, value );
+        m_markers.Add( food, value );
 
         //Transform newMarker = Instantiate(marker, new Vector3(-0.5f, (value - 50) / 10, 0) + transform.position, Quaternion.Euler(0,0,90), transform);
         Transform newMarker = Instantiate( marker, transform.position, transform.rotation, transform );
         newMarker.transform.localRotation = Quaternion.Euler( 0, 0, 90 );
         newMarker.transform.localPosition = new Vector3( -0.5f, ( value - 50 ) / 10, 0 );
 
-        newMarker.Find( "Label" ).gameObject.GetComponent<TextMesh>().text = name;
+        newMarker.Find( "Label" ).gameObject.GetComponent<TextMesh>().text = food.name;
     }
 
-    public float getDeviation( string markerName )
+    public float getDeviation( Food food )
     {
-        return m_lerpedValue - m_markers[ markerName ];
+        return m_lerpedValue - m_markers[ food ];
     }
 }
