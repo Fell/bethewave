@@ -34,7 +34,8 @@ public class PowerMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ( !GameManager.Instance.m_isPaused && Input.GetKeyDown( "space" ) )
+
+        if ( !GameManager.Instance.m_isPaused && Input.GetKeyDown(KeyCode.Space) )
         {
             Value += m_increaseStep;
             m_lerpT = 0;
