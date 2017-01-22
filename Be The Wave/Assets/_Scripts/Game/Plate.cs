@@ -112,6 +112,10 @@ public class Plate : MonoBehaviour
 
                 var _devi = UIManager.Instance.m_powerMeter.getDeviation( m_children[ i ] );
 
+                // do nothing if micro does not emit
+                if ( _devi == -m_children[ i ].m_reqStrengthLv )
+                    continue;
+
                 var _heatMultiplier = 1.0f;
                 var _burnMultiplier = 0.0f;
                 // maybe change

@@ -98,6 +98,8 @@ public class PowerMeter : MonoBehaviour
 
     public float getDeviation( Food food )
     {
+        if ( Value == 0 )
+            return -m_markers[ food ];
         return m_lerpedValue - m_markers[ food ];
     }
 }
