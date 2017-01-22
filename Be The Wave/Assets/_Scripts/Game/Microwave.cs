@@ -20,4 +20,9 @@ public class Microwave : MonoBehaviour
         StartCoroutine(sound.PlayStartup());
     }
 
+    public Food[] GetFoods()
+    {
+        return m_plate.GetFoods();
+    } 
+
 }

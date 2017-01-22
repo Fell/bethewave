@@ -88,10 +88,10 @@ public class Plate : MonoBehaviour
             Vector3 _dir = m_children[ i ].transform.position - transform.position;
             _dir -= transform.up * Vector3.Dot( _dir, transform.up );
             _dir = _dir.normalized;
-            // we fucked up axes (microwave.right is transform.down)
+            // we fucked up axes (microwave.right is transform.back)
             var _dot = Vector3.Dot( _dir, -transform.parent.forward );
 
-            Debug.LogFormat( "{0}: {1:0.00}°", m_children[ i ].name, ( Mathf.Acos( _dot ) * Mathf.Rad2Deg ) );
+            //Debug.LogFormat( "{0}: {1:0.00}°", m_children[ i ].name, ( Mathf.Acos( _dot ) * Mathf.Rad2Deg ) );
 
             Debug.DrawRay( m_children[ i ].transform.position, -transform.parent.forward, Color.green );
             Debug.DrawRay( m_children[ i ].transform.position, _dir, Color.red );
@@ -99,7 +99,7 @@ public class Plate : MonoBehaviour
             // change later!!!
             if ( _dot > _minDot )
             {
-                Debug.LogFormat( "{0} has influence: {1}", m_children[ i ].name, 1 );
+                //Debug.LogFormat( "{0} has influence: {1}", m_children[ i ].name, 1 );
 
                 var _devi = UIManager.Instance.m_powerMeter.getDeviation( m_children[ i ] );
 
@@ -114,17 +114,40 @@ public class Plate : MonoBehaviour
                 if ( _devi > 10 )
                 {
                     // 100 - 10
-
                     _burnMultiplier = _devi - 10;
                 }
 
-                m_children[ i ].m_actBurnPec += _burnMultiplier;
-                m_children[ i ].m_actDegreePec += m_children[ i ].m_degreePecRaise * Time.deltaTime * _heatMultiplier;
+                m_children[ i ].currentBurnStatus += _burnMultiplier;
+                m_children[ i ].currentCookStatus += m_children[ i ].m_cookRate * Time.deltaTime * _heatMultiplier;
 
-                //Debug.LogFormat( "{0}: Heat: {1}%, Burn: {2}%", m_children[ i ].name, m_children[ i ].m_actDegreePec, m_children[ i ].m_actBurnPec );
+                //Debug.LogFormat( "{0}: Heat: {1}%, Burn: {2}%", m_children[ i ].name, m_children[ i ].currentCookStatus, m_children[ i ].currentBurnStatus );
             }
 
         }
+        var _allFinished = true;
+        var _allBurnt = true;
+
+        for ( int i = 0; i < m_children.Length; i++ )
+        {
+            if ( !m_children[ i ].m_hasBeenCooked )
+                _allFinished = false;
+
+            if ( !m_children[ i ].m_hasBeenBurnt )
+                _allBurnt = false;
+
+            if ( !_allBurnt && !_allFinished )
+                break;
+        }
+
+        if ( _allFinished )
+            GameManager.Instance.StopLevel( EndType.AllDone, m_children );
+        else if ( _allBurnt )
+            GameManager.Instance.StopLevel( EndType.AllBurnt, m_children );
+    }
+
+    public Food[] GetFoods()
+    {
+        return m_children;
     }
 
     #endregion

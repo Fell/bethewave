@@ -42,6 +42,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
+    public void StartGame(int _index)
+    {
+        m_currentIndex = _index;
+        m_isPaused = true;
+        SceneManager.LoadScene(m_levels[m_currentIndex].m_level);
+    }
+
     public void PauseGame()
     {
 
@@ -51,6 +58,17 @@ public class GameManager : MonoBehaviour
     {
         m_isPaused = true;
         SceneManager.LoadScene( mainMenuScene );
+    }
+
+    public void OpenNextScene()
+    {
+        m_currentIndex++;
+        m_isPaused = true;
+
+        if ( m_currentIndex < m_levels.Count )
+            SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
+        else
+            StopGame();
     }
 
     public void CreateField()
@@ -64,6 +82,8 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.m_timer.OnTimerFinished -= OnTimerFinished;
 
         m_isPaused = true;
+
+        StopLevel( EndType.TimeOut );
     }
 
     public void StartScene()
@@ -71,6 +91,17 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.m_microwave.StartWaving();
 
         m_isPaused = false;
+    }
+
+    public void StopLevel( EndType _type )
+    {
+        StopLevel( _type, UIManager.Instance.m_microwave.GetFoods() );
+    }
+
+    public void StopLevel( EndType _type, Food[] _food )
+    {
+        m_isPaused = true;
+        UIManager.Instance.StartCoroutine( UIManager.Instance.DoResultScreen( new PerformanceReport( _food, _type ) ) );
     }
 }
 

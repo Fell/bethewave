@@ -43,6 +43,7 @@ public class PlateCreatorWindow : EditorWindow
             if ( GUILayout.Button( "Create Plate" ) )
             {
                 m_plate = new GameObject( "Plate" ).AddComponent<Plate>();
+                var _meshGO = Instantiate( AssetDatabase.LoadAssetAtPath<GameObject>( "Assets/_Art/Objects/Plate/Plate.obj" ), m_plate.transform );
                 m_editor = Editor.CreateEditor( m_plate );
             }
 

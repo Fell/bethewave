@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public Image loadBar;
+
+    public AudioClip m_selecSound;
+    public AudioClip m_openSound;
+
     public MenuPoint[] m_menuPoints;
 
     public MenuPoint[] m_LevelPoints;
@@ -16,11 +22,17 @@ public class MainMenu : MonoBehaviour
 
     public float m_foodScale = 1.0f;
 
+    public float selecTime = 0.5f;
+
     private MenuPoint[] m_children = new MenuPoint[0];
+
+    AudioSource aSource;
 
     float angle;
 
     bool changeSelection = false;
+
+    bool hold = false;
 
     int selectedVal = 0;
     int oldSelected = 0;
@@ -31,16 +43,24 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        aSource = GetComponent<AudioSource>();
+        aSource.clip = m_openSound;
+        aSource.Play();
         CreateMenuPoints();
     }
 
     void Update()
     {
-        if (!changeSelection && Input.GetKey(KeyCode.Space))
+        //Activates the selected Action when space is hold for a moment
+        if (!hold && !changeSelection && Input.GetKey(KeyCode.Space))
         {
             useTimer += Time.deltaTime;
-            if (useTimer >= 1)
+            loadBar.fillAmount = useTimer / selecTime;
+            if (useTimer >= selecTime)
             {
+                hold = true;
+                aSource.clip = m_children[selectedVal].m_clip;
+                aSource.Play();
                 useTimer = 0;
                 m_children[selectedVal].MenuAction();
             }
@@ -48,11 +68,14 @@ public class MainMenu : MonoBehaviour
         else
         {
             useTimer = 0;
+            loadBar.fillAmount = 0;
         }
 
         //Changes the selected MenuPoint
-        if (!changeSelection && Input.GetKeyUp( KeyCode.Space ))
+        if (!hold && !changeSelection && Input.GetKeyUp( KeyCode.Space ))
         {
+            aSource.clip = m_selecSound;
+            aSource.Play();
             changeSelection = true;
             oldSelected = selectedVal;
             selectedVal++;
@@ -73,6 +96,11 @@ public class MainMenu : MonoBehaviour
                 timer = 0;
                 changeSelection = false;
             }
+        }
+
+        if (Input.GetKeyUp( KeyCode.Space ))
+        {
+            hold = false;
         }
     }
 
