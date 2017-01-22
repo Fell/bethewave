@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
 
     public void OpenNextScene()
     {
-        m_currentIndex++;
         m_isPaused = true;
 
         if ( m_currentIndex < m_levels.Count )
@@ -101,14 +100,16 @@ public class GameManager : MonoBehaviour
     public void StopLevel( EndType _type, Food[] _food )
     {
         m_isPaused = true;
-        FindObjectOfType<SoundManager>().PlayShutdown();
-        UIManager.Instance.StartCoroutine( UIManager.Instance.DoResultScreen( new PerformanceReport( _food, _type ) ) );
+
+        m_currentIndex++;
+        UIManager.Instance.StartCoroutine( UIManager.Instance.DoResultScreen( new PerformanceReport( _food, _type ), m_currentIndex < m_levels.Count ) );
     }
 }
 
 [System.Serializable]
 public struct LevelInfo
 {
+    public string m_name;
     public string m_level;
     public Plate m_plate;
 }
