@@ -84,11 +84,13 @@ public class MainMenu : MonoBehaviour
             aSource.Play();
             changeSelection = true;
             oldSelected = selectedVal;
-            selectedVal--;
-            if (selectedVal < 0)
+            selectedVal++;
+            if (selectedVal >= m_children.Length)
             {
-                selectedVal = m_children.Length-1;
+                selectedVal = 0;
             }
+            m_children[oldSelected].Select(false);
+            m_children[selectedVal].Select(true);
         }
 
         //Rotates the menu plate
@@ -133,6 +135,7 @@ public class MainMenu : MonoBehaviour
             m_children[i] = Instantiate(m_menuPoints[i].gameObject, this.transform.position + dir + Vector3.up * m_heightOffset, Quaternion.identity, this.transform).GetComponent<MenuPoint>();
             m_children[i].transform.localScale = new Vector3(m_foodScale, m_foodScale, m_foodScale);
         }
+        m_children[selectedVal].Select(true);
     }
 
     public void createLevelPoints()
@@ -152,7 +155,7 @@ public class MainMenu : MonoBehaviour
 
         for (int i = 0; i < GameManager.Instance.m_levels.Count + 1; i++)
         {
-            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)), 0, Mathf.Sin(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)));
+            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)), 0, -Mathf.Sin(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)));
             dir = dir * m_distance;
             if (i == 0)
             {
@@ -166,6 +169,7 @@ public class MainMenu : MonoBehaviour
                 m_children[i].GetComponent<MPStartGame>().setLevelID(i-1);
             }
         }
+        m_children[selectedVal].Select(true);
     }
 
     public void FadeOut()

@@ -29,6 +29,14 @@ public class MenuPoint : MonoBehaviour
     public virtual void Select( bool p_selected )
     {
         // do custom selection here
+        if (p_selected)
+        {
+            transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+        }
+        else
+        {
+            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
     }
 
     public virtual void MenuAction()
