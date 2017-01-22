@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public Image loadBar;
+
     public MenuPoint[] m_menuPoints;
+
+    public MenuPoint[] m_LevelPoints;
 
     public float m_distance = 5;
 
@@ -14,7 +19,9 @@ public class MainMenu : MonoBehaviour
 
     public float m_foodScale = 1.0f;
 
-    private MenuPoint[] m_children;
+    public float selecTime = 0.5f;
+
+    private MenuPoint[] m_children = new MenuPoint[0];
 
     float angle;
 
@@ -29,22 +36,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-
-        if (m_menuPoints.Length <= 0)
-            return;
-
-        angle = 360 / m_menuPoints.Length;
-
-        //Creates All MenuPoints as Children
-        m_children = new MenuPoint[m_menuPoints.Length];
-
-        for (int i = 0; i < m_menuPoints.Length; i++)
-        {
-            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / m_menuPoints.Length),0, -Mathf.Sin(2 * Mathf.PI * i / m_menuPoints.Length));
-            dir = dir * m_distance;
-            m_children[i] = Instantiate(m_menuPoints[i].gameObject, this.transform.position + dir + Vector3.up * m_heightOffset, Quaternion.identity, this.transform).GetComponent<MenuPoint>();
-            m_children[i].transform.localScale = new Vector3(m_foodScale, m_foodScale, m_foodScale);
-        }
+        CreateMenuPoints();
     }
 
     void Update()
@@ -52,7 +44,8 @@ public class MainMenu : MonoBehaviour
         if (!changeSelection && Input.GetKey(KeyCode.Space))
         {
             useTimer += Time.deltaTime;
-            if (useTimer >= 1)
+            loadBar.fillAmount = useTimer / selecTime;
+            if (useTimer >= selecTime)
             {
                 useTimer = 0;
                 m_children[selectedVal].MenuAction();
@@ -61,6 +54,7 @@ public class MainMenu : MonoBehaviour
         else
         {
             useTimer = 0;
+            loadBar.fillAmount = 0;
         }
 
         //Changes the selected MenuPoint
@@ -89,8 +83,62 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void OnStart()
+    public void CreateMenuPoints()
     {
-        GameManager.Instance.StartGame();
+
+        foreach (MenuPoint point in m_children)
+        {
+            Destroy(point.gameObject);
+        }
+
+        if (m_menuPoints.Length <= 0)
+            return;
+
+        angle = 360 / m_menuPoints.Length;
+
+        //Creates All MenuPoints as Children
+        m_children = new MenuPoint[m_menuPoints.Length];
+
+        for (int i = 0; i < m_menuPoints.Length; i++)
+        {
+            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / m_menuPoints.Length), 0, -Mathf.Sin(2 * Mathf.PI * i / m_menuPoints.Length));
+            dir = dir * m_distance;
+            m_children[i] = Instantiate(m_menuPoints[i].gameObject, this.transform.position + dir + Vector3.up * m_heightOffset, Quaternion.identity, this.transform).GetComponent<MenuPoint>();
+            m_children[i].transform.localScale = new Vector3(m_foodScale, m_foodScale, m_foodScale);
+        }
     }
+
+    public void createLevelPoints()
+    {
+        
+        foreach (MenuPoint point in m_children)
+        {
+            Destroy(point.gameObject);
+        }
+
+        if (m_LevelPoints.Length <= 0)
+            return;
+
+        angle = 360 / (GameManager.Instance.m_levels.Count + 1);
+
+        m_children = new MenuPoint[GameManager.Instance.m_levels.Count + 1];
+
+        for (int i = 0; i < GameManager.Instance.m_levels.Count + 1; i++)
+        {
+            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)), 0, -Mathf.Sin(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)));
+            dir = dir * m_distance;
+            if (i == 0)
+            {
+                m_children[i] = Instantiate(m_LevelPoints[0].gameObject, this.transform.position + dir + Vector3.up * m_heightOffset, Quaternion.identity, this.transform).GetComponent<MenuPoint>();
+                m_children[i].transform.localScale = new Vector3(m_foodScale, m_foodScale, m_foodScale);
+            }
+            else
+            {
+                m_children[i] = Instantiate(m_LevelPoints[1].gameObject, this.transform.position + dir + Vector3.up * m_heightOffset, Quaternion.identity, this.transform).GetComponent<MenuPoint>();
+                m_children[i].transform.localScale = new Vector3(m_foodScale, m_foodScale, m_foodScale);
+                m_children[i].GetComponent<MPStartGame>().setLevelID(i-1);
+            }
+        }
+    }
+
 }
