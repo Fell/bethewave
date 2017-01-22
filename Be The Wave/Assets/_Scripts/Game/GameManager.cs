@@ -42,11 +42,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
-    public void StartGame(int _index)
+    public void StartGame( int _index )
     {
         m_currentIndex = _index;
         m_isPaused = true;
-        SceneManager.LoadScene(m_levels[m_currentIndex].m_level);
+        SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
     public void PauseGame()
@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
     public void StopLevel( EndType _type, Food[] _food )
     {
         m_isPaused = true;
+        FindObjectOfType<SoundManager>().PlayShutdown();
         UIManager.Instance.StartCoroutine( UIManager.Instance.DoResultScreen( new PerformanceReport( _food, _type ) ) );
     }
 }

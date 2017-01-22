@@ -48,6 +48,9 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator DoResultScreen( PerformanceReport _report )
     {
+        var _soundManager = FindObjectOfType<SoundManager>();
+        _soundManager.StartCoroutine( _soundManager.PlayShutdown() );
+
         yield return new WaitForSeconds( 5.0f );
 
         yield return StartCoroutine( Fade( 1 ) );
