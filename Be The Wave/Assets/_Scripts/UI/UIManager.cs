@@ -22,6 +22,14 @@ public class UIManager : MonoBehaviour
 
     public AnimationCurve m_countdownCurve;
 
+    public GameObject m_resultScreen;
+
+    public Image m_badgeImage;
+
+    public Sprite[] m_badgeSprites;
+
+    public UnityStandardAssets.ImageEffects.BlurOptimized m_blur;
+
     private void Awake()
     {
         if ( Instance && Instance != this )
@@ -38,9 +46,31 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void DoResultScreen()
+    public IEnumerator DoResultScreen( PerformanceReport _report )
     {
+        yield return new WaitForSeconds( 5.0f );
 
+        yield return StartCoroutine( Fade( 1 ) );
+
+        m_resultScreen.SetActive( true );
+
+        m_badgeImage.sprite = m_badgeSprites[ (int)_report.GetResult() ];
+
+        m_blur.enabled = true;
+
+        yield return StartCoroutine( Fade( 0 ) );
+
+        yield return new WaitForSeconds( 2.5f );
+
+        StartCoroutine( AwaitInput() );
+    }
+
+
+    public IEnumerator CloseResultScreen()
+    {
+        yield return StartCoroutine( Fade( 1 ) );
+
+        GameManager.Instance.OpenNextScene();
     }
 
     private IEnumerator DoSceneIntro()
@@ -94,6 +124,19 @@ public class UIManager : MonoBehaviour
         m_countdownText.GetComponent<CanvasGroup>().alpha = 0;
     }
 
+    private IEnumerator AwaitInput()
+    {
+        while ( true )
+        {
+            if ( Input.GetKeyDown( KeyCode.Space ) )
+            {
+                StartCoroutine( CloseResultScreen() );
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
 
     private void OnTimerFinished()
     {

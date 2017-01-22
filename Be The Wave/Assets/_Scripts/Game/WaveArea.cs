@@ -18,7 +18,9 @@ public class WaveArea : MonoBehaviour {
         Vector3 corner1 = -box.size/2 + box.center;
         Vector3 corner2 = box.size/2 + box.center;
 
-        
+        for (int w = 0; w < 10; w++) {
+            m_waves[w] = 3.1f;
+        }
 
         float step = 0.15f;
         for (float x = corner1.x; x < corner2.x; x += step) {
@@ -34,13 +36,13 @@ public class WaveArea : MonoBehaviour {
 	void Update () {
 
         for(int w = 0; w < 10; w++) {
-            if (m_waves[w] < 3) m_waves[w] += 5 * Time.deltaTime;
+            if (m_waves[w] < 3) m_waves[w] += 4 * Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.m_isPaused) {
             for (int w = 0; w < 10; w++) {
                 if (m_waves[w] > 3) {
-                    m_waves[w] = 0;
+                    m_waves[w] = -0.5f;
                     break;
                 }
             }
@@ -58,7 +60,7 @@ public class WaveArea : MonoBehaviour {
 
         for (int w = 0; w < 10; w++) {
             if (m_waves[w] < 3) {
-                sum += Mathf.Clamp(1 - (Mathf.Abs(distance - m_waves[w])) * 1 - (m_waves[w] / 2), 0, 1);
+                sum += Mathf.Clamp(1 - (Mathf.Abs(distance - m_waves[w])*2) * 1 - (m_waves[w] / 2), 0, 1);
                 //sum += (3 / (m_waves[w] - 1)) / Mathf.Pow((distance - m_waves[w]), 2);
             }
         }
@@ -72,7 +74,7 @@ public class WaveArea : MonoBehaviour {
         GameObject sparkle = new GameObject("Sparkle");
 
         MeshFilter meshFilter = sparkle.AddComponent<MeshFilter>();
-        meshFilter.mesh = CreatePlaneMesh(0.05f, 0.05f);
+        meshFilter.mesh = CreatePlaneMesh(0.2f, 0.2f);
 
         MeshRenderer renderer = sparkle.AddComponent<MeshRenderer>();
         renderer.material = m_sparkMaterial;
