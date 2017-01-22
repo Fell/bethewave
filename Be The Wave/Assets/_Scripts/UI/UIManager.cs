@@ -69,18 +69,14 @@ public class UIManager : MonoBehaviour
         m_blur.enabled = true;
 
         yield return StartCoroutine( Fade( 0 ) );
-
-        yield return new WaitForSeconds( 2.5f );
-
-        StartCoroutine( AwaitInput() );
     }
 
 
-    public IEnumerator CloseResultScreen()
+    public IEnumerator CloseResultScreen( System.Action p_onFinished )
     {
         yield return StartCoroutine( Fade( 1 ) );
 
-        GameManager.Instance.OpenNextScene();
+        p_onFinished();
     }
 
     private IEnumerator DoSceneIntro()
@@ -166,20 +162,6 @@ public class UIManager : MonoBehaviour
         m_tutImageWavey.gameObject.SetActive( false );
         m_tutBubble.gameObject.SetActive( false );
         m_tutText.gameObject.SetActive( false );
-    }
-
-    private IEnumerator AwaitInput()
-    {
-        while ( true )
-        {
-            if ( Input.GetKeyDown( KeyCode.Space ) )
-            {
-                StartCoroutine( CloseResultScreen() );
-                yield break;
-            }
-
-            yield return null;
-        }
     }
 
     private void OnTimerFinished()
