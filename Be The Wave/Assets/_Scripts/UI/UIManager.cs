@@ -16,6 +16,12 @@ public class UIManager : MonoBehaviour
 
     public CanvasGroup m_fader;
 
+    public Image m_tutImage;
+
+    public Image m_tutBubble;
+
+    public Text m_tutText;
+
     public float m_fadeTime;
 
     public Text m_countdownText;
@@ -34,6 +40,11 @@ public class UIManager : MonoBehaviour
 
         m_timer.OnTimerFinished += OnTimerFinished;
 
+        m_tutImage.gameObject.SetActive(false);
+        m_tutBubble.gameObject.SetActive(false);
+        m_tutText.gameObject.SetActive(false);
+
+
         StartCoroutine( DoSceneIntro() );
     }
 
@@ -50,6 +61,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.CreateField();
 
         yield return StartCoroutine( Fade( 0 ) );
+
+        yield return StartCoroutine(ShowTutorial());
 
         yield return StartCoroutine( CountDown() );
 
@@ -92,6 +105,31 @@ public class UIManager : MonoBehaviour
             }
         }
         m_countdownText.GetComponent<CanvasGroup>().alpha = 0;
+    }
+
+    private IEnumerator ShowTutorial()
+    {
+        m_tutImage.sprite = m_microwave.GetPlate().m_tutSprite;
+        m_tutImage.gameObject.SetActive(true);
+        m_tutBubble.gameObject.SetActive(true);
+        m_tutText.gameObject.SetActive(true);
+
+        string[] tuts = m_microwave.GetPlate().m_tutTexts;
+
+        for (int i = 0; i < tuts.Length; i++)
+        {
+            m_tutText.text = tuts[i];
+            
+            while (!Input.GetKeyDown( KeyCode.Space ))
+            {
+                yield return null;
+            }
+            yield return null;
+        }
+
+        m_tutImage.gameObject.SetActive(false);
+        m_tutBubble.gameObject.SetActive(false);
+        m_tutText.gameObject.SetActive(false);
     }
 
 
