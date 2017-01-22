@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class MPStartGame : MenuPoint {
 
+    int m_levelID = 0; 
+
     public override void MenuAction()
     {
-        GameManager.Instance.StartGame();
+        Debug.Log(m_levelID);
+        //GameManager.Instance.StartGame();
+    }
+
+    public void setLevelID(int _id)
+    {
+        m_levelID = _id;
     }
 }
