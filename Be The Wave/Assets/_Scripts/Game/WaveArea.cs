@@ -60,7 +60,7 @@ public class WaveArea : MonoBehaviour {
 
         for (int w = 0; w < 10; w++) {
             if (m_waves[w] < 3) {
-                sum += Mathf.Clamp(1 - (Mathf.Abs(distance - m_waves[w])*2) * 1 - (m_waves[w] / 2), 0, 1);
+                sum += Mathf.Clamp(1 - (Mathf.Abs(distance - m_waves[w]) * 2) * 1 - (m_waves[w] / 3), 0, 1);
                 //sum += (3 / (m_waves[w] - 1)) / Mathf.Pow((distance - m_waves[w]), 2);
             }
         }
