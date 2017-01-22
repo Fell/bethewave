@@ -16,6 +16,13 @@ public class UIManager : MonoBehaviour
 
     public CanvasGroup m_fader;
 
+    public Image m_tutImageSergeant;
+    public Image m_tutImageWavey;
+
+    public Image m_tutBubble;
+
+    public Text m_tutText;
+
     public float m_fadeTime;
 
     public Text m_countdownText;
@@ -41,6 +48,12 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         m_timer.OnTimerFinished += OnTimerFinished;
+
+        m_tutImageSergeant.gameObject.SetActive(false);
+        m_tutImageWavey.gameObject.SetActive(false);
+        m_tutBubble.gameObject.SetActive(false);
+        m_tutText.gameObject.SetActive(false);
+
 
         StartCoroutine( DoSceneIntro() );
     }
@@ -84,6 +97,8 @@ public class UIManager : MonoBehaviour
 
         yield return StartCoroutine( Fade( 0 ) );
 
+        yield return StartCoroutine(ShowTutorial());
+
         yield return StartCoroutine( CountDown() );
 
         GameManager.Instance.StartScene();
@@ -125,6 +140,38 @@ public class UIManager : MonoBehaviour
             }
         }
         m_countdownText.GetComponent<CanvasGroup>().alpha = 0;
+    }
+
+    private IEnumerator ShowTutorial()
+    {
+        if (m_microwave.GetPlate().m_tutSergeant)
+        {
+            m_tutImageSergeant.gameObject.SetActive(true); 
+        }
+        else
+        {
+            m_tutImageWavey.gameObject.SetActive(true); 
+        }
+        m_tutBubble.gameObject.SetActive(true);
+        m_tutText.gameObject.SetActive(true);
+
+        string[] tuts = m_microwave.GetPlate().m_tutTexts;
+
+        for (int i = 0; i < tuts.Length; i++)
+        {
+            m_tutText.text = tuts[i];
+            
+            while (!Input.GetKeyDown( KeyCode.Space ))
+            {
+                yield return null;
+            }
+            yield return null;
+        }
+
+        m_tutImageSergeant.gameObject.SetActive(false);
+        m_tutImageWavey.gameObject.SetActive(false);
+        m_tutBubble.gameObject.SetActive(false);
+        m_tutText.gameObject.SetActive(false);
     }
 
     private IEnumerator AwaitInput()
