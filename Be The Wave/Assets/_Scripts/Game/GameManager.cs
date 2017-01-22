@@ -42,11 +42,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
-    public void StartGame(int _index)
+    public void StartGame( int _index )
     {
         m_currentIndex = _index;
         m_isPaused = true;
-        SceneManager.LoadScene(m_levels[m_currentIndex].m_level);
+        SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
     public void PauseGame()
@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour
 
     public void OpenNextScene()
     {
-        m_currentIndex++;
         m_isPaused = true;
 
         if ( m_currentIndex < m_levels.Count )
@@ -101,13 +100,16 @@ public class GameManager : MonoBehaviour
     public void StopLevel( EndType _type, Food[] _food )
     {
         m_isPaused = true;
-        UIManager.Instance.StartCoroutine( UIManager.Instance.DoResultScreen( new PerformanceReport( _food, _type ) ) );
+
+        m_currentIndex++;
+        UIManager.Instance.StartCoroutine( UIManager.Instance.DoResultScreen( new PerformanceReport( _food, _type ), m_currentIndex < m_levels.Count ) );
     }
 }
 
 [System.Serializable]
 public struct LevelInfo
 {
+    public string m_name;
     public string m_level;
     public Plate m_plate;
 }

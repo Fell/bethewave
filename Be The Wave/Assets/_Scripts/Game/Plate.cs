@@ -87,6 +87,9 @@ public class Plate : MonoBehaviour
     {
         var _minDot = Mathf.Cos( Mathf.Deg2Rad * m_triggerAngle );
 
+        Vector3 _active = new Vector3( m_foodScale, m_foodScale, m_foodScale );
+        Vector3 _inactive = _active * 0.75f;
+
         for ( int i = 0; i < m_children.Length; i++ )
         {
             Vector3 _dir = m_children[ i ].transform.position - transform.position;
@@ -103,6 +106,8 @@ public class Plate : MonoBehaviour
             // change later!!!
             if ( _dot > _minDot )
             {
+                m_children[ i ].transform.localScale = _active;
+
                 //Debug.LogFormat( "{0} has influence: {1}", m_children[ i ].name, 1 );
 
                 var _devi = UIManager.Instance.m_powerMeter.getDeviation( m_children[ i ] );
@@ -125,6 +130,10 @@ public class Plate : MonoBehaviour
                 m_children[ i ].currentCookStatus += m_children[ i ].m_cookRate * Time.deltaTime * _heatMultiplier;
 
                 //Debug.LogFormat( "{0}: Heat: {1}%, Burn: {2}%", m_children[ i ].name, m_children[ i ].currentCookStatus, m_children[ i ].currentBurnStatus );
+            }
+            else
+            {
+                m_children[ i ].transform.localScale = _inactive;
             }
 
         }

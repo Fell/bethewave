@@ -10,17 +10,12 @@ public class SoundManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        UIManager.Instance.m_timer.OnTimerFinished += OnTimerFinished;
     }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-
-    public void OnTimerFinished() {
-        StartCoroutine(PlayShutdown());
-    }
 
     public IEnumerator PlayStartup() {
         AudioSource source = this.GetComponent<AudioSource>();

@@ -68,8 +68,8 @@ public class Food : MonoBehaviour
                 if ( m_canExplode && !m_hasExploded )
                 {
                     m_hasExploded = true;
-                    if ( m_burnParticles )
-                        Instantiate( m_burnParticles, transform );
+                    if ( m_burnParticles ) // display explosion for complete plate
+                        Instantiate( m_burnParticles, transform.parent );
                     StartCoroutine( ChangeMaterial() );
                     GameManager.Instance.StopLevel( EndType.Explosion );
                 }

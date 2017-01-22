@@ -29,11 +29,7 @@ public class UIManager : MonoBehaviour
 
     public AnimationCurve m_countdownCurve;
 
-    public GameObject m_resultScreen;
-
-    public Image m_badgeImage;
-
-    public Sprite[] m_badgeSprites;
+    public ResultScreen m_resultScreen;
 
     public UnityStandardAssets.ImageEffects.BlurOptimized m_blur;
 
@@ -49,25 +45,26 @@ public class UIManager : MonoBehaviour
 
         m_timer.OnTimerFinished += OnTimerFinished;
 
-        m_tutImageSergeant.gameObject.SetActive(false);
-        m_tutImageWavey.gameObject.SetActive(false);
-        m_tutBubble.gameObject.SetActive(false);
-        m_tutText.gameObject.SetActive(false);
+        m_tutImageSergeant.gameObject.SetActive( false );
+        m_tutImageWavey.gameObject.SetActive( false );
+        m_tutBubble.gameObject.SetActive( false );
+        m_tutText.gameObject.SetActive( false );
 
 
         StartCoroutine( DoSceneIntro() );
     }
 
 
-    public IEnumerator DoResultScreen( PerformanceReport _report )
+    public IEnumerator DoResultScreen( PerformanceReport _report, bool _hasAnotherLevel )
     {
+        var _soundManager = FindObjectOfType<SoundManager>();
+        _soundManager.StartCoroutine( _soundManager.PlayShutdown() );
+
         yield return new WaitForSeconds( 5.0f );
 
         yield return StartCoroutine( Fade( 1 ) );
 
-        m_resultScreen.SetActive( true );
-
-        m_badgeImage.sprite = m_badgeSprites[ (int)_report.GetResult() ];
+        m_resultScreen.Show( _report, _hasAnotherLevel );
 
         m_blur.enabled = true;
 
@@ -94,7 +91,7 @@ public class UIManager : MonoBehaviour
 
         yield return StartCoroutine( Fade( 0 ) );
 
-        yield return StartCoroutine(ShowTutorial());
+        yield return StartCoroutine( ShowTutorial() );
 
         yield return StartCoroutine( CountDown() );
 
@@ -141,34 +138,34 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator ShowTutorial()
     {
-        if (m_microwave.GetPlate().m_tutSergeant)
+        if ( m_microwave.GetPlate().m_tutSergeant )
         {
-            m_tutImageSergeant.gameObject.SetActive(true); 
+            m_tutImageSergeant.gameObject.SetActive( true );
         }
         else
         {
-            m_tutImageWavey.gameObject.SetActive(true); 
+            m_tutImageWavey.gameObject.SetActive( true );
         }
-        m_tutBubble.gameObject.SetActive(true);
-        m_tutText.gameObject.SetActive(true);
+        m_tutBubble.gameObject.SetActive( true );
+        m_tutText.gameObject.SetActive( true );
 
         string[] tuts = m_microwave.GetPlate().m_tutTexts;
 
-        for (int i = 0; i < tuts.Length; i++)
+        for ( int i = 0; i < tuts.Length; i++ )
         {
-            m_tutText.text = tuts[i];
-            
-            while (!Input.GetKeyDown( KeyCode.Space ))
+            m_tutText.text = tuts[ i ];
+
+            while ( !Input.GetKeyDown( KeyCode.Space ) )
             {
                 yield return null;
             }
             yield return null;
         }
 
-        m_tutImageSergeant.gameObject.SetActive(false);
-        m_tutImageWavey.gameObject.SetActive(false);
-        m_tutBubble.gameObject.SetActive(false);
-        m_tutText.gameObject.SetActive(false);
+        m_tutImageSergeant.gameObject.SetActive( false );
+        m_tutImageWavey.gameObject.SetActive( false );
+        m_tutBubble.gameObject.SetActive( false );
+        m_tutText.gameObject.SetActive( false );
     }
 
     private IEnumerator AwaitInput()
