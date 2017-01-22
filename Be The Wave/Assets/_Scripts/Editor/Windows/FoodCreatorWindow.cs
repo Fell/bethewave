@@ -112,7 +112,9 @@ public class FoodCreatorWindow : EditorWindow
         _obj.GetComponent<MeshRenderer>().material = AssetDatabase.LoadAssetAtPath<Material>( "Assets/_Art/Materials/FoodMaterial.mat" );
         _obj.AddComponent<Food>();
         _obj.name = m_newName;
-        var _sub = new GameObject( "StatusText", typeof( TextMesh ) );
+        var _sub = new GameObject( "StatusText" ).AddComponent<TextMesh>();
+        _sub.fontSize = 50;
+        _sub.characterSize = 0.125f;
         _sub.transform.parent = _obj.transform;
         _sub.transform.localPosition += Vector3.up * 3;
 
