@@ -53,6 +53,7 @@ public class ResultScreen : MonoBehaviour
     {
         m_options[ m_selected ].Select( false );
         m_selected = ( m_selected + 1 ) % m_options.Count;
+        m_options[ m_selected ].Select( true );
     }
 
 
