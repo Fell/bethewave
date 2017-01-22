@@ -9,6 +9,10 @@ public class Plate : MonoBehaviour
 
     public List<Food> m_foods = new List<Food>();
 
+    public string[] m_tutTexts = new string[3];
+
+    public Sprite m_tutSprite;
+
     public float m_rotSpeed = 10;
 
     public float m_distance = 10;
@@ -35,6 +39,12 @@ public class Plate : MonoBehaviour
     {
         if ( m_foods.Count <= 0 )
             return;
+
+        m_tutTexts = new string[3];
+
+        m_tutTexts[0] = "nummer1";
+        m_tutTexts[1] = "aber2";
+        m_tutTexts[2] = "denoch3";
 
         angle = 360 / m_foods.Count;
 

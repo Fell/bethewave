@@ -9,7 +9,7 @@ public class MenuPoint : MonoBehaviour {
     public AudioClip m_clip;
 
 	// Use this for initialization
-	public void Start () {
+	public virtual void Start () {
         GetComponentInChildren<MeshRenderer>().material.mainTexture = m_texture;
         if (m_targetCam == null)
         {

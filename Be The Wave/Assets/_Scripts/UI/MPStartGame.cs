@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class MPStartGame : MenuPoint {
 
-    int m_levelID = 0; 
+    public TextMesh m_indexIndicator;
+
+    int m_levelID = 0;
+
+    public override void Start()
+    {
+        base.Start();
+        m_indexIndicator.text = (m_levelID + 1) + "";
+    }
 
     public override void MenuAction()
     {
