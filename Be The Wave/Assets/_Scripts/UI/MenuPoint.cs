@@ -6,7 +6,7 @@ public class MenuPoint : MonoBehaviour {
 
     public Texture m_texture;
     public Camera m_targetCam;
-
+    public AudioClip m_clip;
 
 	// Use this for initialization
 	public void Start () {
