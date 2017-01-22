@@ -42,6 +42,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene( m_levels[ m_currentIndex ].m_level );
     }
 
+    public void StartGame(int _index)
+    {
+        m_currentIndex = _index;
+        m_isPaused = true;
+        SceneManager.LoadScene(m_levels[m_currentIndex].m_level);
+    }
+
     public void PauseGame()
     {
 

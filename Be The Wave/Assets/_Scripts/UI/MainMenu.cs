@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    public Image loadBar;
+
     public MenuPoint[] m_menuPoints;
 
     public MenuPoint[] m_LevelPoints;
@@ -15,6 +18,8 @@ public class MainMenu : MonoBehaviour
     public float m_heightOffset = 1f;
 
     public float m_foodScale = 1.0f;
+
+    public float selecTime = 0.5f;
 
     private MenuPoint[] m_children = new MenuPoint[0];
 
@@ -39,7 +44,8 @@ public class MainMenu : MonoBehaviour
         if (!changeSelection && Input.GetKey(KeyCode.Space))
         {
             useTimer += Time.deltaTime;
-            if (useTimer >= 1)
+            loadBar.fillAmount = useTimer / selecTime;
+            if (useTimer >= selecTime)
             {
                 useTimer = 0;
                 m_children[selectedVal].MenuAction();
@@ -48,6 +54,7 @@ public class MainMenu : MonoBehaviour
         else
         {
             useTimer = 0;
+            loadBar.fillAmount = 0;
         }
 
         //Changes the selected MenuPoint

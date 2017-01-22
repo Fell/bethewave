@@ -8,8 +8,7 @@ public class MPStartGame : MenuPoint {
 
     public override void MenuAction()
     {
-        Debug.Log(m_levelID);
-        //GameManager.Instance.StartGame();
+        GameManager.Instance.StartGame(m_levelID);
     }
 
     public void setLevelID(int _id)
