@@ -14,6 +14,10 @@ public class MainMenu : MonoBehaviour
 
     public MenuPoint[] m_LevelPoints;
 
+    public CanvasGroup m_fader;
+
+    public float m_fadeTime;
+
     public float m_distance = 5;
 
     public float m_rotSpeed = 3;
@@ -47,7 +51,9 @@ public class MainMenu : MonoBehaviour
         aSource.clip = m_openSound;
         aSource.Play();
         CreateMenuPoints();
+        StartCoroutine(Fade(0));
     }
+
 
     void Update()
     {
@@ -78,10 +84,10 @@ public class MainMenu : MonoBehaviour
             aSource.Play();
             changeSelection = true;
             oldSelected = selectedVal;
-            selectedVal++;
-            if (selectedVal >= m_children.Length)
+            selectedVal--;
+            if (selectedVal < 0)
             {
-                selectedVal = 0;
+                selectedVal = m_children.Length-1;
             }
         }
 
@@ -146,7 +152,7 @@ public class MainMenu : MonoBehaviour
 
         for (int i = 0; i < GameManager.Instance.m_levels.Count + 1; i++)
         {
-            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)), 0, -Mathf.Sin(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)));
+            Vector3 dir = new Vector3(Mathf.Cos(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)), 0, Mathf.Sin(2 * Mathf.PI * i / (GameManager.Instance.m_levels.Count + 1)));
             dir = dir * m_distance;
             if (i == 0)
             {
@@ -162,4 +168,27 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void FadeOut()
+    {
+        StartCoroutine(Fade(1));
+    }
+
+    private IEnumerator Fade(float _targetAlpha)
+    {
+        float _time = 0;
+        float _startAlpha = m_fader.alpha;
+        if (m_fadeTime > 0)
+        {
+            while (_time < m_fadeTime)
+            {
+                _time += Time.deltaTime;
+                m_fader.alpha = Mathf.Lerp(_startAlpha, _targetAlpha, (_time / m_fadeTime));
+                yield return null;
+            }
+        }
+        else
+        {
+            m_fader.alpha = _targetAlpha;
+        }
+    }
 }

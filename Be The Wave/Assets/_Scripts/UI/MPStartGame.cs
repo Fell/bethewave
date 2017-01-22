@@ -16,6 +16,7 @@ public class MPStartGame : MenuPoint {
 
     public override void MenuAction()
     {
+        transform.parent.GetComponent<MainMenu>().FadeOut();
         GameManager.Instance.StartGame(m_levelID);
     }
 
