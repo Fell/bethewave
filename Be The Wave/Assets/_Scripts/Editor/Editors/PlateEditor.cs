@@ -37,11 +37,14 @@ public class PlateEditor : Editor
 
         if ( _iterate )
         {
+            var _openChildren = false;
             do
             {
                 if ( _it.name != "m_foods" )
-                    EditorGUILayout.PropertyField( _it );
-            } while ( _it.NextVisible( false ) );
+                {
+                    _openChildren = EditorGUILayout.PropertyField( _it );
+                }
+            } while ( _it.NextVisible( _openChildren ) );
         }
 
         m_list.DoLayoutList();
@@ -82,6 +85,11 @@ public class PlateEditor : Editor
 
             EditorGUI.LabelField( _pictureRect, new GUIContent( _food.m_texture ) );
         }
+    }
+
+    private void DisplayWithChildren( SerializedProperty _property )
+    {
+
     }
 
     #endregion
