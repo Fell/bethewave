@@ -9,6 +9,10 @@ public class Plate : MonoBehaviour
 
     public List<Food> m_foods = new List<Food>();
 
+    public string[] m_tutTexts;
+
+    public bool m_tutSergeant = false;
+
     public float m_rotSpeed = 10;
 
     public float m_distance = 10;
