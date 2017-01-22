@@ -88,7 +88,7 @@ public class Plate : MonoBehaviour
         var _minDot = Mathf.Cos( Mathf.Deg2Rad * m_triggerAngle );
 
         Vector3 _active = new Vector3( m_foodScale, m_foodScale, m_foodScale );
-        Vector3 _inactive = _active * 0.75f;
+        Vector3 _inactive = _active * 0.9f;
 
         for ( int i = 0; i < m_children.Length; i++ )
         {
