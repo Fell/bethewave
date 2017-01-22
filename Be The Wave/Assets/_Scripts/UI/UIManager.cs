@@ -16,7 +16,8 @@ public class UIManager : MonoBehaviour
 
     public CanvasGroup m_fader;
 
-    public Image m_tutImage;
+    public Image m_tutImageSergeant;
+    public Image m_tutImageWavey;
 
     public Image m_tutBubble;
 
@@ -48,7 +49,8 @@ public class UIManager : MonoBehaviour
 
         m_timer.OnTimerFinished += OnTimerFinished;
 
-        m_tutImage.gameObject.SetActive(false);
+        m_tutImageSergeant.gameObject.SetActive(false);
+        m_tutImageWavey.gameObject.SetActive(false);
         m_tutBubble.gameObject.SetActive(false);
         m_tutText.gameObject.SetActive(false);
 
@@ -139,8 +141,14 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator ShowTutorial()
     {
-        m_tutImage.sprite = m_microwave.GetPlate().m_tutSprite;
-        m_tutImage.gameObject.SetActive(true);
+        if (m_microwave.GetPlate().m_tutSergeant)
+        {
+            m_tutImageSergeant.gameObject.SetActive(true); 
+        }
+        else
+        {
+            m_tutImageWavey.gameObject.SetActive(true); 
+        }
         m_tutBubble.gameObject.SetActive(true);
         m_tutText.gameObject.SetActive(true);
 
@@ -157,7 +165,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
 
-        m_tutImage.gameObject.SetActive(false);
+        m_tutImageSergeant.gameObject.SetActive(false);
+        m_tutImageWavey.gameObject.SetActive(false);
         m_tutBubble.gameObject.SetActive(false);
         m_tutText.gameObject.SetActive(false);
     }
