@@ -17,7 +17,17 @@ public static class Helper
         if ( !Directory.Exists( _folderPath ) )
             Directory.CreateDirectory( _folderPath );
 
-        PrefabUtility.CreatePrefab( _relPath, _obj );
+        var _old = AssetDatabase.LoadAssetAtPath<GameObject>( _relPath );
+
+        if ( _old )
+        {
+            PrefabUtility.ReplacePrefab( _obj, _old, ReplacePrefabOptions.ConnectToPrefab );
+        }
+        else
+        {
+            PrefabUtility.CreatePrefab( _relPath, _obj, ReplacePrefabOptions.ConnectToPrefab );
+        }
+
         AssetDatabase.ImportAsset( _relPath, ImportAssetOptions.ForceUpdate );
         AssetDatabase.Refresh();
         Object.DestroyImmediate( _obj );
@@ -46,6 +56,5 @@ public static class Helper
 
         return _prefabs;
     }
-
     //public static void CreatePrefab(this GameObject _obj, string _path)
 }

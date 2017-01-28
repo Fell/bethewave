@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Food : MonoBehaviour
 {
@@ -111,6 +112,8 @@ public class Food : MonoBehaviour
 
     public bool m_hasExploded;
 
+    private Image m_image;
+
     #endregion
 
     #region Methods
@@ -134,6 +137,12 @@ public class Food : MonoBehaviour
         TextMesh theMesh = transform.Find( "StatusText" ).gameObject.GetComponent<TextMesh>();
         theMesh.text = (int)currentCookStatus + "%";
         theMesh.color = Color.Lerp( Color.white, Color.red, currentBurnStatus / m_neededDegree );
+
+        m_image.fillAmount = m_status / 100;
+        var _alpha = m_image.color.a;
+        var _color = Color.Lerp( Color.white, Color.red, m_burnStatus / 100 );
+        _color.a = _alpha;
+        m_image.color = _color;
     }
 
     private IEnumerator ChangeMaterial()
