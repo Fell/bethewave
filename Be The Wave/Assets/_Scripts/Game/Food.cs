@@ -125,6 +125,8 @@ public class Food : MonoBehaviour
         currentBurnStatus = 0;
 
         GetComponentInChildren<MeshRenderer>().material.mainTexture = m_texture;
+
+        m_image = GetComponentInChildren<Image>();
     }
 
     // Update is called once per frame
@@ -134,15 +136,18 @@ public class Food : MonoBehaviour
         transform.forward = Camera.main.transform.forward;
 
         // Update Text
-        TextMesh theMesh = transform.Find( "StatusText" ).gameObject.GetComponent<TextMesh>();
-        theMesh.text = (int)currentCookStatus + "%";
-        theMesh.color = Color.Lerp( Color.white, Color.red, currentBurnStatus / m_neededDegree );
+        //TextMesh theMesh = transform.Find( "StatusText" ).gameObject.GetComponent<TextMesh>();
+        //theMesh.text = (int)currentCookStatus + "%";
+        //theMesh.color = Color.Lerp( Color.white, Color.red, currentBurnStatus / m_neededDegree );
 
-        m_image.fillAmount = m_status / 100;
-        var _alpha = m_image.color.a;
-        var _color = Color.Lerp( Color.white, Color.red, m_burnStatus / 100 );
-        _color.a = _alpha;
-        m_image.color = _color;
+        if ( m_image )
+        {
+            m_image.fillAmount = m_status / 100;
+            var _alpha = m_image.color.a;
+            var _color = Color.Lerp( Color.white, Color.red, m_burnStatus / 100 );
+            _color.a = _alpha;
+            m_image.color = _color;
+        }
     }
 
     private IEnumerator ChangeMaterial()
