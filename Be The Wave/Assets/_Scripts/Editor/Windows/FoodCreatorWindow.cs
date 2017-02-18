@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class FoodCreatorWindow : EditorWindow
 {
@@ -112,11 +113,28 @@ public class FoodCreatorWindow : EditorWindow
         _obj.GetComponent<MeshRenderer>().material = AssetDatabase.LoadAssetAtPath<Material>( "Assets/_Art/Materials/FoodMaterial.mat" );
         _obj.AddComponent<Food>();
         _obj.name = m_newName;
-        var _sub = new GameObject( "StatusText" ).AddComponent<TextMesh>();
-        _sub.fontSize = 50;
-        _sub.characterSize = 0.125f;
-        _sub.transform.parent = _obj.transform;
-        _sub.transform.localPosition += Vector3.up * 3;
+
+        var _canvas = new GameObject( "Canvas", typeof( RectTransform ), typeof( Canvas ), typeof( CanvasScaler ), typeof( GraphicRaycaster ) ).GetComponent<Canvas>();
+        var _cTrans = _canvas.transform as RectTransform;
+
+        _cTrans.SetParent( _obj.transform, false );
+        _cTrans.localPosition = Vector3.up * 0.75f;
+        _cTrans.localRotation = Quaternion.identity;
+
+        _cTrans.localScale = Vector3.one * 0.005f;
+
+        var _image = new GameObject( "Image", typeof( RectTransform ), typeof( Image ) ).GetComponent<Image>();
+        var _imageTrans = _image.rectTransform;
+        _imageTrans.SetParent( _cTrans, false );
+
+        var _sprite = AssetDatabase.LoadAssetAtPath<Sprite>( "Assets/_Art/Textures/Sprites/FOOD_BTW2.png" );
+
+        _image.sprite = _sprite;
+        _image.type = Image.Type.Filled;
+        _image.fillAmount = 0;
+        _image.fillClockwise = true;
+        _image.fillMethod = Image.FillMethod.Radial360;
+        _image.fillOrigin = 2;
 
         _obj.CreatePrefab( PATH );
 
